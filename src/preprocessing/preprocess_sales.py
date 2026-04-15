@@ -16,9 +16,7 @@ def preprocess_data():
     print("Original dataset loaded successfully")
     print(f"Rows: {len(df)}")
 
-    # =============================
     # DATE PROCESSING
-    # =============================
     df["date"] = pd.to_datetime(df["date"])
 
     df["year"] = df["date"].dt.year
