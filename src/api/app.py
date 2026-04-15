@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from src.prediction.predict import predict_revenue, predict_demand
+from src.training.train_revenue_model import train_revenue_model
+from src.training.train_demand_model import train_demand_model
 
 app = FastAPI()
 
@@ -19,7 +21,9 @@ class PredictionRequest(BaseModel):
 
 @app.get("/")
 def home():
-    return {"message": "Hardware AI Prediction API running"}
+    return {
+        "message": "Hardware AI Prediction API running"
+    }
 
 
 @app.post("/predict")
@@ -50,3 +54,23 @@ def predict(data: PredictionRequest):
         "predicted_revenue": revenue,
         "predicted_demand": demand
     }
+
+
+@app.post("/retrain")
+def retrain_models():
+    try:
+        # Retrain both models
+        train_revenue_model()
+        train_demand_model()
+
+        return {
+            "success": True,
+            "message": "Models retrained successfully"
+        }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "message": "Model retraining failed",
+            "error": str(e)
+        }
