@@ -1,7 +1,6 @@
 import joblib
 import pandas as pd
 
-# =============================
 # LOAD MODELS
 # =============================
 revenue_model = joblib.load("models/revenue_forecast_model.pkl")
