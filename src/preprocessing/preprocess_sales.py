@@ -1,9 +1,7 @@
 import pandas as pd
 import os
 
-# =============================
 # FILE PATHS
-# =============================
 INPUT_FILE = "data/generated/hardware_sales_dataset_12months.csv"
 OUTPUT_DIR = "data/processed"
 OUTPUT_FILE = f"{OUTPUT_DIR}/cleaned_sales_dataset.csv"
