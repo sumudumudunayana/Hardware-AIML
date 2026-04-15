@@ -2,7 +2,6 @@ import joblib
 import pandas as pd
 
 # LOAD MODELS
-# =============================
 revenue_model = joblib.load("models/revenue_forecast_model.pkl")
 demand_model = joblib.load("models/demand_forecast_model.pkl")
 encoder = joblib.load("models/product_label_encoder.pkl")
