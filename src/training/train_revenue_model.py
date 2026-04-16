@@ -35,7 +35,6 @@ def train_revenue_model():
     X = df[feature_columns]
     y = df["revenue"]
 
-    # =============================
     # TRAIN TEST SPLIT
     # =============================
     X_train, X_test, y_train, y_test = train_test_split(
