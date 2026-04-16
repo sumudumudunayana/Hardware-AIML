@@ -59,9 +59,7 @@ def train_demand_model():
 
     model.fit(X_train, y_train)
 
-    # =============================
     # EVALUATE MODEL
-    # =============================
     predictions = model.predict(X_test)
 
     mae = mean_absolute_error(y_test, predictions)
