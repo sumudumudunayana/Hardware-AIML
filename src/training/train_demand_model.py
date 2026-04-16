@@ -69,9 +69,7 @@ def train_demand_model():
     print(f"MAE: {mae:.2f}")
     print(f"R² Score: {r2:.4f}")
 
-    # =============================
     # SAVE MODEL + ENCODER
-    # =============================
     joblib.dump(model, MODEL_FILE)
     joblib.dump(encoder, ENCODER_FILE)
 
