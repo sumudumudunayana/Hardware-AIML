@@ -52,7 +52,6 @@ def train_revenue_model():
     model.fit(X_train, y_train)
 
     # EVALUATION
-    # =============================
     predictions = model.predict(X_test)
 
     mae = mean_absolute_error(y_test, predictions)
