@@ -62,7 +62,6 @@ def train_revenue_model():
     print(f"R² Score: {r2:.4f}")
 
     # SAVE MODEL
-    # =============================
     joblib.dump(model, MODEL_FILE)
 
     print(f"Model saved to: {MODEL_FILE}")
