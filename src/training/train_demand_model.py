@@ -51,9 +51,7 @@ def train_demand_model():
         random_state=42
     )
 
-    # =============================
     # TRAIN MODEL
-    # =============================
     model = RandomForestRegressor(
         n_estimators=100,
         random_state=42
