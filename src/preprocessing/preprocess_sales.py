@@ -48,9 +48,7 @@ def preprocess_data():
         .fillna(0)
     )
 
-    # =============================
     # SAVE CLEANED DATA
-    # =============================
     df.to_csv(OUTPUT_FILE, index=False)
 
     print("Preprocessed dataset saved successfully")
