@@ -5,9 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
 
-# =============================
 # FILE PATHS
-# =============================
 INPUT_FILE = "data/processed/cleaned_sales_dataset.csv"
 MODEL_DIR = "models"
 MODEL_FILE = f"{MODEL_DIR}/revenue_forecast_model.pkl"
