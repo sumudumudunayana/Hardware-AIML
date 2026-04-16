@@ -20,7 +20,6 @@ def train_revenue_model():
     print("Processed dataset loaded successfully")
     print(f"Rows: {len(df)}")
 
-    # =============================
     # FEATURE SELECTION
     # =============================
     feature_columns = [
