@@ -6,9 +6,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.preprocessing import LabelEncoder
 
-# =============================
 # FILE PATHS
-# =============================
 INPUT_FILE = "data/processed/cleaned_sales_dataset.csv"
 MODEL_DIR = "models"
 MODEL_FILE = f"{MODEL_DIR}/demand_forecast_model.pkl"
