@@ -25,9 +25,7 @@ def preprocess_data():
     df["day_of_week"] = df["date"].dt.dayofweek
     df["week_of_year"] = df["date"].dt.isocalendar().week
 
-    # =============================
     # FEATURE ENGINEERING
-    # =============================
     df["is_weekend"] = df["day_of_week"].apply(
         lambda x: 1 if x >= 5 else 0
     )
