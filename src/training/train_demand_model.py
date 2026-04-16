@@ -43,9 +43,7 @@ def train_demand_model():
     # Target = future quantity demand
     y = df["quantity_sold"]
 
-    # =============================
     # TRAIN TEST SPLIT
-    # =============================
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,
