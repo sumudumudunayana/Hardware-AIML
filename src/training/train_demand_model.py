@@ -22,9 +22,7 @@ def train_demand_model():
     print("Processed dataset loaded successfully")
     print(f"Rows: {len(df)}")
 
-    # =============================
     # ENCODE PRODUCT IDS
-    # =============================
     encoder = LabelEncoder()
     df["product_encoded"] = encoder.fit_transform(df["product_id"])
 
