@@ -26,9 +26,7 @@ def train_demand_model():
     encoder = LabelEncoder()
     df["product_encoded"] = encoder.fit_transform(df["product_id"])
 
-    # =============================
     # FEATURE SELECTION
-    # =============================
     feature_columns = [
         "product_encoded",
         "unit_price",
