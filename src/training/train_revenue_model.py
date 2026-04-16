@@ -44,7 +44,6 @@ def train_revenue_model():
     )
 
     # TRAIN MODEL
-    # =============================
     model = RandomForestRegressor(
         n_estimators=100,
         random_state=42
