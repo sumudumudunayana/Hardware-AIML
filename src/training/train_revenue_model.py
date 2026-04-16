@@ -21,7 +21,6 @@ def train_revenue_model():
     print(f"Rows: {len(df)}")
 
     # FEATURE SELECTION
-    # =============================
     feature_columns = [
         "unit_price",
         "quantity_sold",
