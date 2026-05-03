@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.prediction.predict import (
     predict_revenue,
@@ -9,9 +10,28 @@ from src.prediction.predict import (
 from src.training.train_revenue_model import train_revenue_model
 from src.training.train_demand_model import train_demand_model
 
-app = FastAPI()
+import uvicorn
+
+app = FastAPI(title="AI Prediction Service")
+
+# ✅ CORS (IMPORTANT for mobile + backend communication)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # You can restrict later
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ✅ Health check route (VERY IMPORTANT for Render)
+@app.get("/")
+def home():
+    return {"message": "AI server is running 🚀"}
 
 
+# ==============================
+# REQUEST MODEL
+# ==============================
 class PredictionRequest(BaseModel):
     product_id: str
 
@@ -26,55 +46,78 @@ class PredictionRequest(BaseModel):
     rolling_avg_qty: float
     previous_qty: float
 
-    # REQUIRED (missing before)
     lag_1: float
     lag_2: float
     rolling_avg_7: float
     rolling_avg_30: float
 
 
+# ==============================
+# PREDICT
+# ==============================
 @app.post("/predict")
 def predict(data: PredictionRequest):
+    try:
+        predicted_demand = predict_demand(
+            product_id=data.product_id,
+            unit_price=data.unit_price,
+            month=data.month,
+            day=data.day,
+            day_of_week=data.day_of_week,
+            is_weekend=data.is_weekend,
+            rolling_avg_qty=data.rolling_avg_qty,
+            previous_qty=data.previous_qty,
+            lag_1=data.lag_1,
+            lag_2=data.lag_2,
+            rolling_avg_7=data.rolling_avg_7,
+            rolling_avg_30=data.rolling_avg_30
+        )
 
-    predicted_demand = predict_demand(
-        product_id=data.product_id,
-        unit_price=data.unit_price,
-        month=data.month,
-        day=data.day,
-        day_of_week=data.day_of_week,
-        is_weekend=data.is_weekend,
-        rolling_avg_qty=data.rolling_avg_qty,
-        previous_qty=data.previous_qty,
-        lag_1=data.lag_1,
-        lag_2=data.lag_2,
-        rolling_avg_7=data.rolling_avg_7,
-        rolling_avg_30=data.rolling_avg_30
-    )
+        predicted_revenue = predict_revenue(
+            unit_price=data.unit_price,
+            quantity_sold=data.quantity_sold,
+            month=data.month,
+            day=data.day,
+            day_of_week=data.day_of_week,
+            is_weekend=data.is_weekend,
+            rolling_avg_qty=data.rolling_avg_qty,
+            previous_qty=data.previous_qty,
+            lag_1=data.lag_1,
+            lag_2=data.lag_2,
+            rolling_avg_7=data.rolling_avg_7,
+            rolling_avg_30=data.rolling_avg_30
+        )
 
-    predicted_revenue = predict_revenue(
-        unit_price=data.unit_price,
-        quantity_sold=data.quantity_sold,
-        month=data.month,
-        day=data.day,
-        day_of_week=data.day_of_week,
-        is_weekend=data.is_weekend,
-        rolling_avg_qty=data.rolling_avg_qty,
-        previous_qty=data.previous_qty,
-        lag_1=data.lag_1,
-        lag_2=data.lag_2,
-        rolling_avg_7=data.rolling_avg_7,
-        rolling_avg_30=data.rolling_avg_30
-    )
+        return {
+            "predicted_demand": float(predicted_demand),
+            "predicted_revenue": float(predicted_revenue)
+        }
 
-    return {
-        "predicted_demand": predicted_demand,
-        "predicted_revenue": predicted_revenue
-    }
+    except Exception as e:
+        return {
+            "error": "Prediction failed",
+            "message": str(e)
+        }
 
 
+# ==============================
+# RETRAIN
+# ==============================
 @app.post("/retrain")
 def retrain_models():
-    train_revenue_model()
-    train_demand_model()
+    try:
+        train_revenue_model()
+        train_demand_model()
 
-    return {"message": "Models retrained successfully"}
+        return {"message": "Models retrained successfully"}
+
+    except Exception as e:
+        return {
+            "error": "Retraining failed",
+            "message": str(e)
+        }
+
+
+# ✅ IMPORTANT FOR LOCAL RUN (Render uses start command instead)
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
